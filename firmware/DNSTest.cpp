@@ -41,11 +41,9 @@ SYSTEM_MODE(MANUAL)
 
 // The following define will enable additional options
 // not generally needed but I wanted to keep them in there for future use
-#define EXPERT_MODE
+//#define EXPERT_MODE
 
 // User defined information  ## THESE ARE FOR YOU TO CHANGE ##
-//#define USER_WIFI_SSID         "PietteFiOS"
-//#define USER_WIFI_PASSWORD     "M6X6R7BX6DQNNW6T"
 #define USER_WIFI_SSID         "Your_SSID"
 #define USER_WIFI_PASSWORD     "Your_SSID_PASSWORD"
 #define USER_IPADDRESS         192, 168, 1, 104
