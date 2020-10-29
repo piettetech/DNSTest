@@ -190,10 +190,10 @@ void fixDNS() {
 		    WiFi.connect();
 		    Serial.print("Waiting for WiFi to connect ");
 		    _timeout = 0;
-		    while (_timeout++ < MAX_WIFI_RETRY && !WiFi.ready()) { Serial.print("+"); Spark.process(); delay(100);}
-            while (ip_config.aucDNSServer[3] == 0 && ip_config.aucDNSServer[2] == 0) { Serial.print("-"); Spark.process(); delay(100); }
+		    while (_timeout++ < MAX_WIFI_RETRY && !WiFi.ready()) { Serial.print("+"); Particle.process(); delay(100);}
+            while (ip_config.aucDNSServer[3] == 0 && ip_config.aucDNSServer[2] == 0) { Serial.print("-"); Particle.process(); delay(100); }
 		    _timeout = 0;
-            while (_timeout++ < (MAX_WIFI_RETRY/2) &&  ip_config.aucDNSServer[3] == 76 && ip_config.aucDNSServer[2] == 83) { Serial.print("*"); Spark.process(); delay(100); }
+            while (_timeout++ < (MAX_WIFI_RETRY/2) &&  ip_config.aucDNSServer[3] == 76 && ip_config.aucDNSServer[2] == 83) { Serial.print("*"); Particle.process(); delay(100); }
             if (_timeout == MAX_WIFI_RETRY) {
                 Serial.print("Failed to connect to WiFi router - credentials ");
                 Serial.println(WiFi.hasCredentials() ? "known" : "unknown");
@@ -215,8 +215,8 @@ void fixDNS() {
             WiFi.disconnect();
             Serial.print("Waiting for WiFi to disconnect ");
             _timeout = 0;
-            while (_timeout < MAX_WIFI_RETRY && WiFi.ready()) { Serial.print("-"); Spark.process(); _timeout++; delay(100); }
-            while (ip_config.aucDNSServer[3] != 0 || ip_config.aucDNSServer[2] != 0) { Serial.print("-"); Spark.process(); delay(100); }
+            while (_timeout < MAX_WIFI_RETRY && WiFi.ready()) { Serial.print("-"); Particle.process(); _timeout++; delay(100); }
+            while (ip_config.aucDNSServer[3] != 0 || ip_config.aucDNSServer[2] != 0) { Serial.print("-"); Particle.process(); delay(100); }
             Serial.println();
             bWiFiConnect = false;
             bCloudConnect = false;
@@ -376,7 +376,7 @@ void loop() {
     }
 
     Serial.print("   --> ");
-    while(!Serial.available()) { if (WiFi.ready()) Spark.process(); };
+    while(!Serial.available()) { if (WiFi.ready()) Particle.process(); };
     _ans = Serial.read();
     switch (_ans) {
         case '0':
@@ -400,7 +400,7 @@ void loop() {
             	}
                 WiFi.off();
                 Serial.print("Waiting for CC3000 to turn off ");
-                while (WiFi.ready()) { Serial.print("-"); Spark.process(); delay(100); }
+                while (WiFi.ready()) { Serial.print("-"); Particle.process(); delay(100); }
                 while (ip_config.aucDNSServer[3] != 0 || ip_config.aucDNSServer[2] != 0)
                     { Serial.print("+"); delay(100); }
                 bWiFiEnable = false;
@@ -492,18 +492,18 @@ void loop() {
             Serial.print("\r\n\r\nCloud - ");
             if (bCloudConnect) {
                 Serial.print("disconnecting -");
-                Spark.disconnect();
+                Particle.disconnect();
                 _timeout = 0;
-                while (_timeout < MAX_WIFI_RETRY && Spark.connected()) { Serial.print("-"); _timeout++; delay(100);}
+                while (_timeout < MAX_WIFI_RETRY && Particle.connected()) { Serial.print("-"); _timeout++; delay(100);}
                 if (_timeout == MAX_WIFI_RETRY) {
                     Serial.println("Failed to disconnect from cloud");
                 }
                 else Serial.println();
             } else {
             	Serial.print("connecting +");
-            	Spark.connect();
+            	Particle.connect();
             	_timeout = 0;
-            	while (_timeout < MAX_WIFI_RETRY && !Spark.connected()) { Serial.print("+"); _timeout++; delay(100);}
+            	while (_timeout < MAX_WIFI_RETRY && !Particle.connected()) { Serial.print("+"); _timeout++; delay(100);}
             	if (_timeout == MAX_WIFI_RETRY) {
             		Serial.println("Failed to connect to Spark Cloud.");
             	}
@@ -513,7 +513,7 @@ void loop() {
                 	bWiFiConnect = WiFi.ready();
                 }
             }
-            bCloudConnect = Spark.connected();
+            bCloudConnect = Particle.connected();
             dumpIP();
             break;
 #if defined(EXPERT_MODE)
